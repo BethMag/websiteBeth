@@ -1,11 +1,28 @@
-<div align="center">
+# CommonGround — Team Development & DiSC® Practice
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+A clean, modern website and installable Progressive Web App (PWA) for team development practices utilizing Everything DiSC®.
 
-  <h1>Built with AI Studio</h2>
+## Customizing Your Content
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+All brand copy, practitioner details, offers, deliverables, DiSC® style descriptions, and client testimonials live in one file:
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+- `src/data/siteContent.ts`
 
-</div>
+Update `SITE_CONFIG` (brand name, practitioner name, email, location) and `SERVICE_OFFERS` to match your exact practice.
+
+## Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Building & Publishing to GitHub Pages
+
+1. Push this repository to GitHub.
+2. Run a production build to generate the static `dist/` bundle:
+   ```bash
+   npm run build
+   ```
+3. Deploy the `dist/` directory using GitHub Pages (via GitHub Actions `actions/deploy-pages`), Vercel, or Netlify.
+4. Note: If deploying under a repository subpath (e.g., `https://username.github.io/repo-name/`), set `base: '/repo-name/'` in `vite.config.ts` and update the PWA `start_url` and `scope` accordingly.

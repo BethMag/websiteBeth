@@ -1,0 +1,6 @@
+{
+  "name": "CommonGround — Team Development & DiSC®",
+  "description": "Team development workshops and interactive DiSC® assessment app to help teams communicate clearly, build trust, and grow together.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
