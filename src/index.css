@@ -5,27 +5,56 @@
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  --color-canvas: #F8FAF8;
-  --color-surface: #FFFFFF;
-  --color-surface-muted: #EFF4F0;
-  --color-ink: #14241E;
-  --color-ink-muted: #4B5E55;
-  --color-border-hairline: #DCE5DF;
-  --color-growth: #1B6B50;
-  --color-growth-hover: #14533E;
-  --color-growth-soft: #E3F1EB;
+  --color-canvas: #FFFFFF;
+  --color-surface-tint: #EDF7F2;
+  --color-surface-warm: #FFFBEB;
+  --color-ink: #0B1F17;
+  --color-ink-muted: #1E3A2F;
+  --color-border-strong: #8CAEA0;
+  --color-forest: #064E3B;
+  --color-growth: #047857;
+  --color-growth-vivid: #059669;
+  --color-spark: #FBBF24;
+  --color-spark-deep: #B45309;
 }
 
 @layer base {
   html {
     font-family: var(--font-sans);
+    font-size: 16px;
     color: var(--color-ink);
     background-color: var(--color-canvas);
+  }
+
+  html.a11y-large-text {
+    font-size: 19px;
   }
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);
   }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid #F59E0B;
+    outline-offset: 2px;
+  }
+}
+
+/* Optional Extra-High-Contrast mode for visually impaired users */
+html.a11y-high-contrast body {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+html.a11y-high-contrast section,
+html.a11y-high-contrast header,
+html.a11y-high-contrast footer {
+  border-color: #000000;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -110,6 +110,8 @@ export type DiscKey = 'D' | 'i' | 'S' | 'C';
 export interface DiscStyleInfo {
   key: DiscKey;
   name: string;
+  shapeLabel: string;
+  paceAndFocus: string;
   tagline: string;
   color: string;
   softBg: string;
@@ -126,10 +128,12 @@ export const DISC_STYLES: Record<DiscKey, DiscStyleInfo> = {
   D: {
     key: 'D',
     name: 'Dominance',
+    shapeLabel: 'Triangle',
+    paceAndFocus: 'Fast-paced · Task-focused',
     tagline: 'Direct, results-focused, decisive, and comfortable with challenge',
-    color: '#B45309',
-    softBg: '#FEF3C7',
-    borderColor: '#F59E0B',
+    color: '#B91C1C', // 6.47:1 contrast on white
+    softBg: '#FEF2F2',
+    borderColor: '#B91C1C',
     priorities: ['Getting immediate results', 'Taking action quickly', 'Challenging the status quo'],
     strengths: [
       'Keeps teams moving when decisions stall',
@@ -152,10 +156,12 @@ export const DISC_STYLES: Record<DiscKey, DiscStyleInfo> = {
   i: {
     key: 'i',
     name: 'Influence',
+    shapeLabel: 'Circle',
+    paceAndFocus: 'Fast-paced · People-focused',
     tagline: 'Enthusiastic, collaborative, expressive, and energized by people',
-    color: '#0F766E',
-    softBg: '#CCFBF1',
-    borderColor: '#14B8A6',
+    color: '#9A3412', // 7.1:1 contrast on white (deep vibrant burnt orange)
+    softBg: '#FFF7ED',
+    borderColor: '#C2410C',
     priorities: ['Building momentum and energy', 'Collaborating openly', 'Inspiring shared enthusiasm'],
     strengths: [
       'Creates warmth, psychological safety, and connection across silos',
@@ -178,10 +184,12 @@ export const DISC_STYLES: Record<DiscKey, DiscStyleInfo> = {
   S: {
     key: 'S',
     name: 'Steadiness',
+    shapeLabel: 'Square',
+    paceAndFocus: 'Moderate-paced · People-focused',
     tagline: 'Calm, dependable, supportive, and focused on team harmony',
-    color: '#1B6B50',
-    softBg: '#E3F1EB',
-    borderColor: '#1B6B50',
+    color: '#047857', // 5.48:1 contrast on white (vivid emerald)
+    softBg: '#ECFDF5',
+    borderColor: '#047857',
     priorities: ['Maintaining stability and trust', 'Supporting teammates consistently', 'Following through reliably'],
     strengths: [
       'Listens deeply and notices when someone on the team is struggling',
@@ -204,10 +212,12 @@ export const DISC_STYLES: Record<DiscKey, DiscStyleInfo> = {
   C: {
     key: 'C',
     name: 'Conscientiousness',
+    shapeLabel: 'Diamond',
+    paceAndFocus: 'Moderate-paced · Task-focused',
     tagline: 'Analytical, thoughtful, thorough, and committed to high standards',
-    color: '#1D4ED8',
-    softBg: '#DBEAFE',
-    borderColor: '#3B82F6',
+    color: '#1D4ED8', // 6.7:1 contrast on white (vivid cobalt blue)
+    softBg: '#EFF6FF',
+    borderColor: '#1D4ED8',
     priorities: ['Ensuring accuracy and quality', 'Thinking through risks', 'Understanding the logic'],
     strengths: [
       'Spots flaws, edge cases, and hidden risks before they become costly',

@@ -23,22 +23,29 @@ export const Header: React.FC<HeaderProps> = ({ onBookClick, onAppClick }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#DCE5DF] bg-[#F8FAF8]/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 border-b-2 border-[#064E3B]/15 bg-white/95 backdrop-blur-sm">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-[#064E3B] focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
+
       <div className="mx-auto flex max-w-[1200px] items-center justify-between gap-8 px-6 py-4">
         <a
           href="#top"
-          className="font-display text-lg font-bold tracking-tight text-[#14241E] whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1B6B50]"
+          className="font-display text-xl font-extrabold tracking-tight text-[#064E3B] whitespace-nowrap shrink-0"
         >
           {SITE_CONFIG.brandName}
         </a>
 
         <nav
           aria-label="Primary navigation"
-          className="hidden md:flex items-center gap-7 text-sm font-medium text-[#4B5E55]"
+          className="hidden md:flex items-center gap-7 text-sm font-semibold text-[#1E3A2F]"
         >
           <a
             href="#offer"
-            className="hover:text-[#14241E] hover:underline underline-offset-4 decoration-[#1B6B50]/60 transition-colors whitespace-nowrap shrink-0"
+            className="py-1.5 hover:text-[#047857] hover:underline underline-offset-4 decoration-2 decoration-[#047857] transition-colors whitespace-nowrap shrink-0"
           >
             The Offer
           </a>
@@ -48,19 +55,19 @@ export const Header: React.FC<HeaderProps> = ({ onBookClick, onAppClick }) => {
               e.preventDefault();
               handleNavClick('disc-app');
             }}
-            className="hover:text-[#14241E] hover:underline underline-offset-4 decoration-[#1B6B50]/60 transition-colors whitespace-nowrap shrink-0"
+            className="py-1.5 hover:text-[#047857] hover:underline underline-offset-4 decoration-2 decoration-[#047857] transition-colors whitespace-nowrap shrink-0"
           >
             DiSC® App
           </a>
           <a
             href="#outcomes"
-            className="hover:text-[#14241E] hover:underline underline-offset-4 decoration-[#1B6B50]/60 transition-colors whitespace-nowrap shrink-0"
+            className="py-1.5 hover:text-[#047857] hover:underline underline-offset-4 decoration-2 decoration-[#047857] transition-colors whitespace-nowrap shrink-0"
           >
             Outcomes
           </a>
           <a
             href="#about"
-            className="hover:text-[#14241E] hover:underline underline-offset-4 decoration-[#1B6B50]/60 transition-colors whitespace-nowrap shrink-0"
+            className="py-1.5 hover:text-[#047857] hover:underline underline-offset-4 decoration-2 decoration-[#047857] transition-colors whitespace-nowrap shrink-0"
           >
             About
           </a>
@@ -73,7 +80,7 @@ export const Header: React.FC<HeaderProps> = ({ onBookClick, onAppClick }) => {
               setMobileOpen(false);
               onBookClick();
             }}
-            className="hidden sm:inline-flex items-center justify-center rounded-lg bg-[#1B6B50] px-4 py-2 text-sm font-medium text-white hover:bg-[#14533E] transition-colors whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B6B50]"
+            className="hidden sm:inline-flex min-h-[44px] items-center justify-center rounded-lg bg-[#047857] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#064E3B] transition-colors whitespace-nowrap shrink-0"
           >
             Book a Call
           </button>
@@ -82,8 +89,8 @@ export const Header: React.FC<HeaderProps> = ({ onBookClick, onAppClick }) => {
             type="button"
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-expanded={mobileOpen}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            className="inline-flex md:hidden items-center justify-center rounded-lg border border-[#DCE5DF] bg-white p-2 text-[#14241E] hover:bg-[#EFF4F0] transition-colors"
+            aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            className="inline-flex md:hidden min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border-2 border-[#064E3B]/30 bg-white p-2 text-[#0B1F17] hover:bg-[#EDF7F2] transition-colors"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -91,33 +98,33 @@ export const Header: React.FC<HeaderProps> = ({ onBookClick, onAppClick }) => {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-[#DCE5DF] bg-white px-6 py-4 md:hidden">
-          <nav className="flex flex-col gap-3 text-sm font-medium text-[#14241E]">
+        <div className="border-t border-[#8CAEA0] bg-white px-6 py-4 md:hidden">
+          <nav aria-label="Mobile navigation" className="flex flex-col gap-2 text-base font-semibold text-[#0B1F17]">
             <a
               href="#offer"
               onClick={() => setMobileOpen(false)}
-              className="py-2 hover:text-[#1B6B50]"
+              className="min-h-[44px] flex items-center hover:text-[#047857]"
             >
               The Offer
             </a>
             <button
               type="button"
               onClick={() => handleNavClick('disc-app')}
-              className="py-2 text-left hover:text-[#1B6B50]"
+              className="min-h-[44px] flex items-center text-left hover:text-[#047857]"
             >
               DiSC® App
             </button>
             <a
               href="#outcomes"
               onClick={() => setMobileOpen(false)}
-              className="py-2 hover:text-[#1B6B50]"
+              className="min-h-[44px] flex items-center hover:text-[#047857]"
             >
               Outcomes
             </a>
             <a
               href="#about"
               onClick={() => setMobileOpen(false)}
-              className="py-2 hover:text-[#1B6B50]"
+              className="min-h-[44px] flex items-center hover:text-[#047857]"
             >
               About
             </a>
@@ -127,7 +134,7 @@ export const Header: React.FC<HeaderProps> = ({ onBookClick, onAppClick }) => {
                 setMobileOpen(false);
                 onBookClick();
               }}
-              className="mt-2 w-full rounded-lg bg-[#1B6B50] px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-[#14533E]"
+              className="mt-2 min-h-[44px] w-full rounded-lg bg-[#047857] px-4 py-3 text-center text-sm font-semibold text-white hover:bg-[#064E3B]"
             >
               Book a Call
             </button>

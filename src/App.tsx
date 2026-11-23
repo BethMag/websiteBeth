@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { AccessibilityBar } from './components/AccessibilityBar';
 import { ContactSection } from './components/ContactSection';
 import { DiscAppSection } from './components/DiscAppSection';
 import { FacilitatorSection } from './components/FacilitatorSection';
@@ -13,6 +14,16 @@ export default function App() {
   const [prefilledScope, setPrefilledScope] = useState('');
   const [prefilledTeamSize, setPrefilledTeamSize] = useState<number | null>(null);
   const [isFocusMode, setIsFocusMode] = useState(false);
+  const [largeText, setLargeText] = useState(false);
+  const [highContrast, setHighContrast] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('a11y-large-text', largeText);
+  }, [largeText]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('a11y-high-contrast', highContrast);
+  }, [highContrast]);
 
   const scrollTo = (id: string) => {
     if (isFocusMode && id !== 'disc-app') {
@@ -37,13 +48,20 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAF8] text-[#14241E]">
+    <div className="min-h-screen bg-white text-[#0B1F17]">
       <Header
         onBookClick={() => scrollTo('contact')}
         onAppClick={() => scrollTo('disc-app')}
       />
 
-      <main>
+      <main id="main-content">
+        <AccessibilityBar
+          largeText={largeText}
+          onToggleLargeText={() => setLargeText((prev) => !prev)}
+          highContrast={highContrast}
+          onToggleHighContrast={() => setHighContrast((prev) => !prev)}
+        />
+
         {!isFocusMode && (
           <>
             <Hero

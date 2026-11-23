@@ -11,32 +11,32 @@ export const Hero: React.FC<HeroProps> = ({ onBookClick, onExploreAppClick }) =>
   const [imgError, setImgError] = useState(false);
 
   return (
-    <section id="top" className="border-b border-[#DCE5DF] bg-[#F8FAF8]">
+    <section id="top" className="border-b-2 border-[#064E3B]/20 bg-[#064E3B] text-white">
       <div className="mx-auto max-w-[1200px] px-6 pt-12 pb-14 lg:pt-16 lg:pb-16">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-stretch lg:gap-12">
           <div className="flex flex-col justify-between lg:col-span-6">
             <div>
-              <p className="text-xs font-medium tracking-wide text-[#1B6B50]">
+              <p className="text-sm font-semibold tracking-wide text-[#FBBF24]">
                 {SITE_CONFIG.practiceTagline}
               </p>
 
               <h1
-                className="mt-4 font-display font-semibold tracking-tight text-[#14241E] text-balance"
+                className="mt-4 font-display font-bold tracking-tight text-white text-balance"
                 style={{ fontSize: 'clamp(2.25rem, 3.8vw, 3.4rem)', lineHeight: 1.12 }}
               >
                 Practical team development built around how people actually work.
               </h1>
 
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-[#4B5E55] sm:text-lg">
-                Using the Everything DiSC® assessment, we help real teams understand each other’s communication styles, reduce day-to-day friction, and build habits that hold up under pressure.
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-[#ECFDF5] sm:text-lg">
+                Using the Everything DiSC® assessment, we help real teams understand each other’s communication styles, reduce day-to-day friction, and grow together with habits that hold up under pressure.
               </p>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-5">
+            <div className="mt-8 flex flex-wrap items-center gap-4">
               <button
                 type="button"
                 onClick={onBookClick}
-                className="inline-flex items-center justify-center rounded-lg bg-[#1B6B50] px-6 py-3 text-sm font-medium text-white hover:bg-[#14533E] transition-colors whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B6B50]"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-lg bg-[#FBBF24] px-6 py-3 text-base font-bold text-[#0B1F17] hover:bg-[#FDE047] transition-colors whitespace-nowrap shrink-0"
               >
                 Book a Discovery Call
               </button>
@@ -44,7 +44,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookClick, onExploreAppClick }) =>
               <button
                 type="button"
                 onClick={onExploreAppClick}
-                className="inline-flex items-center gap-2 py-2 text-sm font-medium text-[#14241E] hover:text-[#1B6B50] transition-colors whitespace-nowrap shrink-0 group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B6B50]"
+                className="inline-flex min-h-[48px] items-center gap-2 rounded-lg border-2 border-white/70 px-5 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#064E3B] transition-colors whitespace-nowrap shrink-0 group"
               >
                 <span>Open the DiSC® Team App</span>
                 <ArrowRight
@@ -56,7 +56,7 @@ export const Hero: React.FC<HeroProps> = ({ onBookClick, onExploreAppClick }) =>
           </div>
 
           <div className="lg:col-span-6">
-            <div className="h-full min-h-[280px] overflow-hidden rounded-xl border border-[#DCE5DF] bg-[#EFF4F0]">
+            <div className="h-full min-h-[280px] overflow-hidden rounded-xl border-2 border-[#34D399]/40 bg-[#047857]">
               {!imgError ? (
                 <img
                   src={MEDIA.heroWorkshop}
@@ -66,9 +66,9 @@ export const Hero: React.FC<HeroProps> = ({ onBookClick, onExploreAppClick }) =>
                   className="h-full w-full object-cover aspect-[16/10] lg:aspect-auto"
                 />
               ) : (
-                <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-3 bg-gradient-to-br from-[#EFF4F0] to-[#DCE5DF] p-8 text-center">
-                  <Users className="h-10 w-10 text-[#1B6B50]" aria-hidden="true" />
-                  <p className="font-display text-base font-medium text-[#14241E]">
+                <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-3 bg-[#047857] p-8 text-center">
+                  <Users className="h-10 w-10 text-[#FBBF24]" aria-hidden="true" />
+                  <p className="font-display text-base font-semibold text-white">
                     Facilitated Everything DiSC® Team Workshops
                   </p>
                 </div>
@@ -77,11 +77,11 @@ export const Hero: React.FC<HeroProps> = ({ onBookClick, onExploreAppClick }) =>
           </div>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[#DCE5DF] bg-[#DCE5DF] sm:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-xl border-2 border-[#34D399]/30 bg-[#047857] sm:grid-cols-4">
           {QUICK_FACTS.map((fact) => (
             <div key={fact.label} className="bg-white px-5 py-4">
-              <p className="text-xs text-[#4B5E55]">{fact.label}</p>
-              <p className="mt-1 font-display text-sm font-semibold text-[#14241E] tabular-nums sm:text-base">
+              <p className="text-xs font-semibold text-[#1E3A2F]">{fact.label}</p>
+              <p className="mt-1 font-display text-sm font-bold text-[#064E3B] tabular-nums sm:text-base">
                 {fact.value}
               </p>
             </div>
