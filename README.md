@@ -1,6 +1,6 @@
 # CommonGround — Team Development & DiSC® Practice
 
-A clean, modern website and installable Progressive Web App (PWA) for team development practices utilizing Everything DiSC®.
+A clean, accessible website and installable Progressive Web App (PWA) for team development practices utilizing Everything DiSC®.
 
 ## Customizing Your Content
 
@@ -10,19 +10,22 @@ All brand copy, practitioner details, offers, deliverables, DiSC® style descrip
 
 Update `SITE_CONFIG` (brand name, practitioner name, email, location) and `SERVICE_OFFERS` to match your exact practice.
 
+## Publishing to GitHub Pages (Important)
+
+This app is built with Vite, React, and TypeScript, so browsers cannot load raw `src/main.tsx` directly from the `main` branch. A production build (`npm run build`) must be deployed instead.
+
+A ready-to-use workflow is already included at `.github/workflows/deploy.yml`:
+
+1. Push all files (including `.github/workflows/deploy.yml`) to the `main` branch of your GitHub repository.
+2. In your GitHub repository, open **Settings → Pages**.
+3. Under **Build and deployment → Source**, choose **GitHub Actions** (not "Deploy from a branch").
+4. GitHub will automatically build `dist/` with the correct repository path and publish your live website and PWA.
+
+*(If you use a custom domain on GitHub Pages, update `VITE_BASE_PATH` in `.github/workflows/deploy.yml` to `/`.)*
+
 ## Local Development
 
 ```bash
 npm install
 npm run dev
 ```
-
-## Building & Publishing to GitHub Pages
-
-1. Push this repository to GitHub.
-2. Run a production build to generate the static `dist/` bundle:
-   ```bash
-   npm run build
-   ```
-3. Deploy the `dist/` directory using GitHub Pages (via GitHub Actions `actions/deploy-pages`), Vercel, or Netlify.
-4. Note: If deploying under a repository subpath (e.g., `https://username.github.io/repo-name/`), set `base: '/repo-name/'` in `vite.config.ts` and update the PWA `start_url` and `scope` accordingly.

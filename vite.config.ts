@@ -6,7 +6,10 @@ import {defineConfig} from 'vite';
 import {VitePWA} from 'vite-plugin-pwa';
 
 export default defineConfig(() => {
+  const base = process.env.VITE_BASE_PATH || '/';
+
   return {
+    base,
     plugins: [
       react(),
       tailwindcss(),
@@ -14,30 +17,30 @@ export default defineConfig(() => {
         registerType: 'autoUpdate',
         includeAssets: ['icon.svg', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
         manifest: {
-          id: '/',
+          id: base,
           name: 'CommonGround — Team Development & DiSC®',
           short_name: 'CommonGround',
           description: 'Team development workshops and interactive DiSC® team app for clearer communication and stronger collaboration.',
-          theme_color: '#1B6B50',
-          background_color: '#F8FAF8',
+          theme_color: '#064E3B',
+          background_color: '#FFFFFF',
           display: 'standalone',
-          start_url: '/',
-          scope: '/',
+          start_url: base,
+          scope: base,
           icons: [
             {
-              src: '/pwa-192x192.png',
+              src: `${base}pwa-192x192.png`,
               sizes: '192x192',
               type: 'image/png',
               purpose: 'any',
             },
             {
-              src: '/pwa-512x512.png',
+              src: `${base}pwa-512x512.png`,
               sizes: '512x512',
               type: 'image/png',
               purpose: 'any',
             },
             {
-              src: '/pwa-maskable-512x512.png',
+              src: `${base}pwa-maskable-512x512.png`,
               sizes: '512x512',
               type: 'image/png',
               purpose: 'maskable',
