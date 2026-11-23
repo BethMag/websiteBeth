@@ -26,14 +26,21 @@ export default function App() {
   }, [highContrast]);
 
   const scrollTo = (id: string) => {
+    const performScroll = () => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      if (id === 'contact') {
+        setTimeout(() => {
+          document.getElementById('contact-name')?.focus({ preventScroll: true });
+        }, 450);
+      }
+    };
+
     if (isFocusMode && id !== 'disc-app') {
       setIsFocusMode(false);
-      setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
+      setTimeout(performScroll, 60);
       return;
     }
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    performScroll();
   };
 
   const handleSelectOffer = (offerTitle: string) => {

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle2, Copy, Mail } from 'lucide-react';
+import { CheckCircle2, Copy, Loader2, Mail } from 'lucide-react';
 import { SITE_CONFIG } from '../data/siteContent';
 
 interface ContactSectionProps {
   prefilledScope: string;
   prefilledTeamSize: number | null;
 }
+
+const WEB3FORMS_ACCESS_KEY = '6f300bd2-6c33-4c25-9d9f-5136f6eb634c';
 
 export const ContactSection: React.FC<ContactSectionProps> = ({
   prefilledScope,
@@ -17,8 +19,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   const [program, setProgram] = useState(
     prefilledScope || 'Everything DiSC® Team Workshop'
   );
-  const [notes, setNotes] = useState('');
-  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string }>({});
+  const [message, setMessage] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<{
+    name?: string;
+    email?: string;
+    message?: string;
+  }>({});
+  const [submitError, setSubmitError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -32,10 +40,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     }
   }, [prefilledScope, prefilledTeamSize]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const nextErrors: { name?: string; email?: string } = {};
+    const nextErrors: { name?: string; email?: string; message?: string } = {};
 
     if (!name.trim()) {
       nextErrors.name = 'Please enter your full name.';
@@ -43,17 +51,57 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     if (!emailPattern.test(email.trim())) {
       nextErrors.email = 'Please enter a valid work email address.';
     }
+    if (!message.trim()) {
+      nextErrors.message = 'Please add a short message about your team or preferred dates.';
+    }
 
-    if (nextErrors.name || nextErrors.email) {
+    if (nextErrors.name || nextErrors.email || nextErrors.message) {
       setFieldErrors(nextErrors);
       return;
     }
 
     setFieldErrors({});
-    setSubmitted(true);
+    setSubmitError('');
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('access_key', WEB3FORMS_ACCESS_KEY);
+      formData.append('subject', `Book a Call Enquiry — ${program}`);
+      formData.append('from_name', `${name.trim()} via ${SITE_CONFIG.brandName}`);
+      formData.append('name', name.trim());
+      formData.append('email', email.trim());
+      formData.append('program', program.trim());
+      formData.append('team_size', teamSize);
+      formData.append(
+        'message',
+        `Program / Scope: ${program}\nTeam Size: ${teamSize}\n\nMessage:\n${message.trim()}`
+      );
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = (await response.json()) as { success?: boolean; message?: string };
+
+      if (response.ok && result.success) {
+        setSubmitted(true);
+      } else {
+        setSubmitError(
+          result.message || 'We could not send your enquiry right now. Please try again or email us directly.'
+        );
+      }
+    } catch {
+      setSubmitError(
+        'Network issue while sending your enquiry. Please check your connection or use the direct email link.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const summaryBlock = `Name: ${name}\nEmail: ${email}\nTeam Size: ${teamSize}\nProgram / Scope: ${program}\nNotes: ${notes || 'None'}`;
+  const summaryBlock = `Name: ${name}\nEmail: ${email}\nTeam Size: ${teamSize}\nProgram / Scope: ${program}\nMessage: ${message}`;
 
   const handleCopySummary = async () => {
     try {
@@ -65,13 +113,22 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     }
   };
 
+  const handleResetForm = () => {
+    setName('');
+    setEmail('');
+    setMessage('');
+    setSubmitted(false);
+    setSubmitError('');
+    setFieldErrors({});
+  };
+
   return (
     <section id="contact" className="border-b-2 border-[#064E3B]/15 bg-white py-16 lg:py-24">
       <div className="mx-auto max-w-[1200px] px-6">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-5">
             <p className="text-sm font-bold tracking-wide text-[#047857]">
-              Book a Discovery Call
+              Book a Call
             </p>
             <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#0B1F17] text-balance sm:text-4xl">
               Tell us about your team and we’ll propose a clear plan.
@@ -113,10 +170,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                     />
                     <div>
                       <h3 className="font-display text-xl font-bold text-[#0B1F17]">
-                        Discovery request ready
+                        Enquiry sent — thank you, {name}
                       </h3>
                       <p className="mt-1 text-sm leading-relaxed text-[#1E3A2F]">
-                        Thank you, {name}. Your workshop brief has been prepared for {program}. Open your email client to send it directly or copy the brief below.
+                        Your &ldquo;Book a Call&rdquo; request has been emailed directly. We’ll reply to {email} within 1 business day with times to connect.
                       </p>
                     </div>
                   </div>
@@ -126,41 +183,40 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   </pre>
 
                   <div className="flex flex-wrap items-center gap-3">
-                    <a
-                      href={`mailto:${SITE_CONFIG.email}?subject=${encodeURIComponent(
-                        `Team DiSC Workshop Inquiry — ${name}`
-                      )}&body=${encodeURIComponent(summaryBlock)}`}
-                      className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-[#047857] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#064E3B] transition-colors"
-                    >
-                      Send via Email App
-                    </a>
-
                     <button
                       type="button"
                       onClick={handleCopySummary}
                       className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border-2 border-[#064E3B] bg-white px-4 py-2.5 text-sm font-bold text-[#064E3B] hover:bg-[#EDF7F2] transition-colors"
                     >
                       <Copy className="h-4 w-4" aria-hidden="true" />
-                      <span>{copied ? 'Copied Brief' : 'Copy Brief'}</span>
+                      <span>{copied ? 'Copied Summary' : 'Copy Summary'}</span>
                     </button>
 
                     <button
                       type="button"
-                      onClick={() => setSubmitted(false)}
+                      onClick={handleResetForm}
                       className="min-h-[44px] text-sm font-bold text-[#1E3A2F] hover:text-[#0B1F17] px-3 py-2 underline underline-offset-4"
                     >
-                      Edit Details
+                      Send Another Enquiry
                     </button>
                   </div>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} noValidate className="space-y-5">
-                  {(fieldErrors.name || fieldErrors.email) && (
+                <form
+                  action="https://api.web3forms.com/submit"
+                  method="POST"
+                  onSubmit={handleSubmit}
+                  noValidate
+                  className="space-y-5"
+                >
+                  <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+
+                  {(fieldErrors.name || fieldErrors.email || fieldErrors.message || submitError) && (
                     <div
                       role="alert"
                       className="rounded-lg border-2 border-[#B91C1C] bg-[#FEF2F2] px-4 py-3 text-sm font-semibold text-[#991B1B]"
                     >
-                      Please check the highlighted fields below before submitting.
+                      {submitError || 'Please check the highlighted fields below before submitting.'}
                     </div>
                   )}
 
@@ -171,6 +227,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       </label>
                       <input
                         id="contact-name"
+                        name="name"
                         type="text"
                         required
                         aria-invalid={!!fieldErrors.name}
@@ -198,6 +255,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       </label>
                       <input
                         id="contact-email"
+                        name="email"
                         type="email"
                         required
                         aria-invalid={!!fieldErrors.email}
@@ -227,6 +285,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       </label>
                       <input
                         id="contact-program"
+                        name="program"
                         type="text"
                         value={program}
                         onChange={(e) => setProgram(e.target.value)}
@@ -240,6 +299,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       </label>
                       <input
                         id="contact-size"
+                        name="team_size"
                         type="number"
                         min={2}
                         max={200}
@@ -251,24 +311,44 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   </div>
 
                   <div>
-                    <label htmlFor="contact-notes" className="block text-sm font-bold text-[#0B1F17]">
-                      What’s happening in your team right now? (Optional)
+                    <label htmlFor="contact-message" className="block text-sm font-bold text-[#0B1F17]">
+                      How can we help your team? <span aria-hidden="true" className="text-[#B91C1C]">*</span>
                     </label>
                     <textarea
-                      id="contact-notes"
-                      rows={3}
-                      value={notes}
-                      onChange={(e) => setNotes(e.target.value)}
-                      placeholder="e.g., Recently merged two squads, preparing for a quarterly offsite in March."
-                      className="mt-1.5 w-full rounded-lg border-2 border-[#8CAEA0] bg-white px-3.5 py-2.5 text-sm text-[#0B1F17] placeholder:text-[#1E3A2F]/55 focus:border-[#047857] focus:outline-none"
+                      id="contact-message"
+                      name="message"
+                      rows={4}
+                      required
+                      aria-invalid={!!fieldErrors.message}
+                      aria-describedby={fieldErrors.message ? 'contact-message-error' : undefined}
+                      value={message}
+                      onChange={(e) => {
+                        setMessage(e.target.value);
+                        if (fieldErrors.message) {
+                          setFieldErrors((p) => ({ ...p, message: undefined }));
+                        }
+                      }}
+                      placeholder="e.g., Looking for a half-day DiSC workshop for 14 people in March. Best times to call are..."
+                      className={`mt-1.5 w-full rounded-lg border-2 bg-white px-3.5 py-2.5 text-sm text-[#0B1F17] placeholder:text-[#1E3A2F]/55 focus:border-[#047857] focus:outline-none ${
+                        fieldErrors.message ? 'border-[#B91C1C]' : 'border-[#8CAEA0]'
+                      }`}
                     />
+                    {fieldErrors.message && (
+                      <p id="contact-message-error" className="mt-1.5 text-xs font-semibold text-[#B91C1C]">
+                        {fieldErrors.message}
+                      </p>
+                    )}
                   </div>
 
                   <button
                     type="submit"
-                    className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#047857] px-6 py-3 text-base font-bold text-white hover:bg-[#064E3B] transition-colors sm:w-auto"
+                    disabled={isSubmitting}
+                    className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#047857] px-6 py-3 text-base font-bold text-white hover:bg-[#064E3B] disabled:opacity-70 transition-colors sm:w-auto"
                   >
-                    Request Discovery Call
+                    {isSubmitting && (
+                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                    )}
+                    <span>{isSubmitting ? 'Sending Enquiry...' : 'Book a Call — Submit Enquiry'}</span>
                   </button>
                 </form>
               )}
